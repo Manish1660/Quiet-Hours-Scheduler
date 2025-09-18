@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/send-reminders?cron_secret=YOUR_CRON_SECRET_MUST_MATCH_ENV_FILE",
+      "schedule": "* * * * *"
+    }
+  ]
+}
