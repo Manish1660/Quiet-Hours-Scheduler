@@ -12,12 +12,13 @@ async function dbConnect() {
 }
 
 export default async function handler(req, res) {
-  const { cron_secret } = req.query;
-  if (cron_secret !== process.env.CRON_SECRET) {
-    console.warn('Unauthorized CRON job attempt');
-    return res.status(401).json({ error: 'Unauthorized' });
+  if (req.query.cron_secret !== process.env.CRON_SECRET) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
+  // later: fetch reminders from MongoDB + send with Resend
+  return res.status(200).json({ success: true, message: "Reminders sent ✅" });
+}
   await dbConnect();
   
   const now = new Date();
