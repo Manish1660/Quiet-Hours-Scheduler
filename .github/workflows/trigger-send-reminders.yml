@@ -2,14 +2,16 @@ name: Send Reminders
 
 on:
   schedule:
-    # Runs every day at 9:00 UTC
-    - cron: "0 9 * * *"
+    - cron: '*/5 * * * *'   # every 5 minutes
   workflow_dispatch:
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Call Vercel Reminder API
+      - name: Ping reminder API
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          curl -X POST "https://quiet-hours-scheduler.vercel.app/api/cron/send-reminders?cron_secret=${{ secrets.CRON_SECRET }}"
+          curl -s -o /dev/null -w "%{http_code}" "$SITE_URL/api/cron/send-reminders?cron_secret=$CRON_SECRET"
