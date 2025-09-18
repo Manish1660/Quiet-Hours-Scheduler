@@ -1,14 +1,15 @@
-name: Send Study Reminders
+name: Send Reminders
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # every 5 min UTC
+    # Runs every day at 9:00 UTC
+    - cron: "0 9 * * *"
   workflow_dispatch:
 
 jobs:
-  reminders:
+  trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Call API
+      - name: Call Vercel Reminder API
         run: |
-          curl -X GET "https://quiet-hours-scheduler.vercel.app/api/cron/send-reminders?cron_secret=${{ secrets.CRON_SECRET }}"
+          curl -X POST "https://quiet-hours-scheduler.vercel.app/api/cron/send-reminders?cron_secret=${{ secrets.CRON_SECRET }}"
